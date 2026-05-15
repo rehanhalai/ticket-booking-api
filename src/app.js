@@ -1,6 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const { connectToDatabase } = require("../config/db");
+const { connectToDatabase } = require("./config/db");
 const bookingRoutes = require("./routes/booking.routes");
 const seatTypeRoutes = require("./routes/seatType.routes");
 const {runasync} = require("./models/index");
