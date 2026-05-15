@@ -1,6 +1,6 @@
 const userBookingRepo = require("../repositories/booking.repository");
 const seatTypeRepo = require("../repositories/seatType.repository");
-const { regexEmail, regexPhone, regexFirstUpperCase } = require("../helper/regex");
+const { regexEmail, regexFirstUpperCase } = require("../helper/regex");
 const ApiError = require("../helper/apiError");
 const messages = require("../constants/messages").messages;
 

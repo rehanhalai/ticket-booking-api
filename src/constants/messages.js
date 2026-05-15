@@ -4,6 +4,7 @@ const messages = {
     SEATTYPE_REQUIRED : "seatType is required",
     SEATSTARTEDAT_REQUIRED : "startDate is required",
     SEATENDINGAT_REQUIRED : "endDate is required",
+    USER_FIELDS_REQUIRED : "name, email, roleId and password are required",
 
     BOOKING_FIELDS_REQUIRED : "name, email, seatNumbers, seatTypeId are required",
     SEAT_TYPE_FIELDS_REQUIRED : "name, price, seatStartedAt, seatEndingAt are required",
@@ -15,9 +16,16 @@ const messages = {
     INVALID_NAME_FORMAT : "Name should start with an uppercase letter",
     INVALID_SEAT_TYPE : "invalid seat type",
     INVALID_SEAT_NUMBERS : "seatNumbers should be an array of numbers",
+
+    PASSWORD_TOO_SHORT : "password should be at least 6 characters long",
     
     EMAIL_ALREADY_EXISTS : "email already exists",
     SEAT_ALREADY_BOOKED : "one or more selected seats are already booked",
+
+    USER_CREATED_SUCCESSFULLY : "user created successfully",
+    USER_FETCHED_SUCCESSFULLY : "user fetched successfully",
+    USER_UPDATED_SUCCESSFULLY : "user updated successfully",
+    USER_DELETED_SUCCESSFULLY : "user deleted successfully",
 
     BOOKING_FETCHED_SUCCESSFULLY : "booking fetched successfully",
     BOOKING_CREATED_SUCCESSFULLY : "booking created successfully",
