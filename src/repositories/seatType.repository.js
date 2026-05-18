@@ -1,4 +1,4 @@
-const seatTypeModel = require("../models/seatType");
+const seatTypeModel = require("../models/seatType.model");
 
 const SeatTypeRepository = {
 

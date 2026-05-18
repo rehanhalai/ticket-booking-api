@@ -1,4 +1,4 @@
-const booking = require("../models/userBooking");
+const booking = require("../models/booking.model");
 const { Op } = require("sequelize");
 
 const UserBookingRepo = {
@@ -10,6 +10,7 @@ const UserBookingRepo = {
     getBookingById : async (id) => {
         return await booking.findByPk(id);
     },
+    
     getConflictingBookings: async (seatNumbers, excludeBookingId = null) => {
         const whereClause = {
             seatNo: {

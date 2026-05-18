@@ -1,21 +1,22 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const { connectToDatabase } = require("../config/db");
+const { connectToDatabase } = require("./config/db");
 const bookingRoutes = require("./routes/booking.routes");
 const seatTypeRoutes = require("./routes/seatType.routes");
-const {runasync} = require("./models/index");
+const authRoutes = require("./routes/auth.routes");
+const { runasync } = require("./models/index");
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT;
-app.use(express.json())
+app.use(express.json());
 
 connectToDatabase();
 
-app.use("/booking",bookingRoutes)
-app.use("/seat-type",seatTypeRoutes)
-
+app.use("/booking", bookingRoutes);
+app.use("/seat-type", seatTypeRoutes);
+app.use("/auth", authRoutes);
 
 // const ifEmailAlreadyExists = (email,data) => {
 //     return data.find(item => item.email == email);
@@ -59,7 +60,7 @@ app.use("/seat-type",seatTypeRoutes)
 //     if (data) {
 //         return res.json({
 //             message: successMessages.recordFetched,
-//             data 
+//             data
 //         })
 //     }
 //     else{
@@ -122,7 +123,7 @@ app.use("/seat-type",seatTypeRoutes)
 //         data.name = name;
 //     if(email && email.length > 0)
 //         data.email = email;
-    
+
 //     return res.json({
 //         message : successMessages.updatedSuccessfully,
 //         data : dummyData
@@ -145,10 +146,9 @@ app.use("/seat-type",seatTypeRoutes)
 // })
 
 app.listen(port, async () => {
-    await runasync();
-    console.log(`server running on port ${port}`)
-})
-
+  await runasync();
+  console.log(`server running on port ${port}`);
+});
 
 // add
 
@@ -156,6 +156,6 @@ app.listen(port, async () => {
 
 // on add API, add in array
 // get all all data in array return
-// get by id 
+// get by id
 // deelted by id,
-// update by id, 
+// update by id,

@@ -1,19 +1,18 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const {sequelizeDB} = require("../../config/db");
+const {sequelizeDB} = require("../config/db");
 
-const UserBooking = sequelizeDB.define('UserBooking',{
+const UserBooking = sequelizeDB.define('Booking',{
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    email : {
-        type : DataTypes.STRING,
-        allowNull : false,
+    user : {
+        type: DataTypes.INTEGER,
+        references:{
+            model : "Users",
+            key: "id"
+        }
     },
     seatNo :{ 
         type: DataTypes.ARRAY(DataTypes.INTEGER),

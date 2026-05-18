@@ -1,6 +1,9 @@
-const UserBookingModel = require("./userBooking");
-const SeatTypeModel = require("./seatType");
-const {sequelizeDB} = require("../../config/db");
+const BookingModel = require("./booking.model");
+const SeatTypeModel = require("./seatType.model");
+const UserModel = require("./user.model");
+const roleModel = require("./role.model");
+
+const {sequelizeDB} = require("../config/db");
 
 
 const runasync = async () => {
