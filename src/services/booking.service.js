@@ -64,16 +64,20 @@ const bookingService = {
         // total ticket price
         const totalTicketPrice = seatNumbers.length * seatTypeVerification.ticketPrice;
 
-        const discounts = await DiscountRepository.getDiscountsByTicketCount(seatNumbers.length);
-        const discountValue = discounts && discounts.length > 0 ? discounts[0].value : 0;
-        const finalTicketPrice = discountValue
+        let discountRecord = await DiscountRepository.getDiscountsByTicketCount(seatNumbers.length);
+
+        const activeDiscount = discountRecord && discountRecord[0];
+        const discountValue = activeDiscount ? JSON.parse(activeDiscount.metadata).value : 0;
+
+        totalTicketPrice = discountValue
             ? totalTicketPrice - (totalTicketPrice * discountValue) / 100
             : totalTicketPrice;
+
         return await userBookingRepo.createBooking({
             user: bookingData.user.id,
             seatNo: seatNumbers,
             seatType: seatTypeId,
-            ticketPrice: finalTicketPrice,
+            ticketPrice: totalTicketPrice,
         });
     },
 
@@ -128,13 +132,15 @@ const bookingService = {
 
             totalTicketPrice = finalSeatNumbers.length * seatTypeVerification.ticketPrice;
 
-            const discount = await DiscountRepository.getDiscountsByTicketCount(
+            let discountRecord = await DiscountRepository.getDiscountsByTicketCount(
                 finalSeatNumbers.length,
             );
-            const discountPercentage = discount ? discount[0].value : 0;
 
-            totalTicketPrice = discountPercentage
-                ? totalTicketPrice - (totalTicketPrice * discountPercentage) / 100
+            const activeDiscount = discountRecord && discountRecord[0];
+            const discountValue = activeDiscount ? JSON.parse(activeDiscount.metadata).value : 0;
+
+            totalTicketPrice = discountValue
+                ? totalTicketPrice - (totalTicketPrice * discountValue) / 100
                 : totalTicketPrice;
         }
 
@@ -151,7 +157,9 @@ const bookingService = {
         if (!booking) {
             throw new ApiError(StatusCodes.NOT_FOUND, messages.BOOKING_NOT_FOUND);
         }
-        return await userBookingRepo.deleteBooking(id);
+        return await userBookingRepo.updateBooking(id, {
+            softDelete: true,
+        });
     },
 };
 

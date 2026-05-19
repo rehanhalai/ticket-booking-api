@@ -1,4 +1,4 @@
-const { Op } = require("sequelize");
+const { Op, Sequelize } = require("sequelize");
 const discountModel = require("../models/discountSettings.model");
 
 const DiscountRepository = {
@@ -10,12 +10,14 @@ const DiscountRepository = {
     },
 
     getDiscountsByTicketCount: async (ticketCount) => {
-        return await discountModel.findAll({
-            where: {
-                key: {
-                    [Op.eq]: ticketCount,
-                },
-            },
+        const all = await discountModel.findAll();
+        return all.filter((record) => {
+            try {
+                const meta = JSON.parse(record.metadata);
+                return meta.count === ticketCount;
+            } catch {
+                return false;
+            }
         });
     },
 

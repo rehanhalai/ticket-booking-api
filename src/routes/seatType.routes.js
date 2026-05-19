@@ -4,7 +4,7 @@ const verifyToken = require("../middleware/auth.middleware").verifyToken;
 const verifyRole = require("../middleware/roles.middleware").verifyRole;
 
 router.use(verifyToken);
-router.use(verifyRole(["2"]));
+router.use(verifyRole(["1"]));
 
 router.get("/", seatTypeController.getAllSeatTypes);
 router.get("/:id", seatTypeController.getSeatTypeById);

@@ -1,32 +1,32 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const {sequelizeDB} = require("../config/db");
+const { Sequelize, DataTypes } = require("sequelize");
+const { sequelizeDB } = require("../config/db");
 
-const SeatType = sequelizeDB.define('SeatType',{
+const SeatType = sequelizeDB.define("seatType", {
     id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
     },
     seatName: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
     },
-    ticketPrice:{
+    ticketPrice: {
         type: DataTypes.FLOAT,
-        allowNull: false
+        allowNull: false,
     },
-    seatStartedAt:{
+    seatStartedAt: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
     },
-    seatEndingAt:{
+    seatEndingAt: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
     },
-    softDelete:{
+    softDelete: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false
-    }
-})
+        defaultValue: false,
+    },
+});
 
 module.exports = SeatType;

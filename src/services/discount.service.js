@@ -5,23 +5,37 @@ const StatusCodes = require("http-status-codes").StatusCodes;
 
 const discountService = {
     getAllDiscounts: async () => {
-        return await discountRepo.getAllDiscounts();
+        const records = await discountRepo.getAllDiscounts();
+        const data = records.map((record) => ({
+            id: record.id,
+            name: record.name,
+            metadata: record.metadata ? JSON.parse(record.metadata) : null,
+        }));
+        return data;
     },
 
     getDiscountById: async (id) => {
-        const data = await discountRepo.getDiscountById(id);
+        let data = await discountRepo.getDiscountById(id);
         if (!data) {
             throw new ApiError(StatusCodes.NOT_FOUND, messages.DISCOUNT_NOT_FOUND);
         }
+        data = {
+            id: data.id,
+            name: data.name,
+            metadata: data.metadata ? JSON.parse(data.metadata) : null,
+        };
         return data;
     },
 
     createDiscount: async (discountData) => {
-        const { minimumTicketCount, percentage } = discountData;
-        if (!minimumTicketCount || !percentage) {
+        const { name, minimumTicketCount, percentage } = discountData;
+        if (!name || !minimumTicketCount || !percentage) {
             throw new ApiError(StatusCodes.BAD_REQUEST, messages.DISCOUNT_FIELDS_REQUIRED);
         }
-        const toSave = { key: minimumTicketCount, value: percentage };
+        const toSave = {
+            name,
+            metadata: JSON.stringify({ count: minimumTicketCount, value: percentage }),
+        };
 
         return await discountRepo.createDiscount(toSave);
     },
@@ -32,11 +46,15 @@ const discountService = {
         }
 
         // Map incoming fields to model fields when updating
-        const { minimumTicketCount, percentage } = discountData;
+        const { name, minimumTicketCount, percentage } = discountData;
         const updateData = {};
-        if (minimumTicketCount !== undefined) updateData.key = minimumTicketCount;
-        if (percentage !== undefined) updateData.value = percentage;
-
+        if (minimumTicketCount !== undefined || percentage !== undefined) {
+            const parsed = JSON.parse(existingDiscount.metadata);
+            updateData.metadata = JSON.stringify({
+                count: minimumTicketCount !== undefined ? minimumTicketCount : parsed.count,
+                value: percentage !== undefined ? percentage : parsed.value,
+            });
+        }
         return await discountRepo.updateDiscount(id, updateData);
     },
     deleteDiscount: async (id) => {

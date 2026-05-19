@@ -6,7 +6,7 @@ const messages = {
     SEATENDINGAT_REQUIRED: "endDate is required",
     USER_FIELDS_REQUIRED: "name, email, roleId and password are required",
     LOGIN_FIELDS_REQUIRED: "email and password are required",
-    DISCOUNT_FIELDS_REQUIRED: "minimumTicketCount and percentage are required",
+    DISCOUNT_FIELDS_REQUIRED: "name, minimumTicketCount and percentage are required",
 
     BOOKING_FIELDS_REQUIRED: "seatNumbers and seatTypeId are required",
     SEAT_TYPE_FIELDS_REQUIRED: "name, price, seatStartedAt, seatEndingAt are required",

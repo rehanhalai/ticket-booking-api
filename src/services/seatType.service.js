@@ -37,14 +37,21 @@ const seatTypeService = {
         if (!data) {
             throw new ApiError(StatusCodes.NOT_FOUND, messages.SEAT_TYPE_NOT_FOUND);
         }
-        return await seatTypeRepo.updateSeatType(id, seatTypeData);
+        return await seatTypeRepo.updateSeatType(id, {
+            seatName: seatTypeData.name || data.seatName,
+            ticketPrice: seatTypeData.price || data.ticketPrice,
+            seatStartedAt: seatTypeData.seatStartedAt || data.seatStartedAt,
+            seatEndingAt: seatTypeData.seatEndingAt || data.seatEndingAt,
+        });
     },
     async deleteSeatType(id) {
         const data = await seatTypeRepo.getSeatTypeById(id);
         if (!data) {
             throw new ApiError(StatusCodes.NOT_FOUND, messages.SEAT_TYPE_NOT_FOUND);
         }
-        return await seatTypeRepo.deleteSeatType(id);
+        return await seatTypeRepo.updateSeatType(id, {
+            softDelete: true,
+        });
     },
 };
 
