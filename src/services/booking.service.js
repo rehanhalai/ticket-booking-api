@@ -24,6 +24,9 @@ const bookingService = {
         if (!bookingData) {
             throw new ApiError(StatusCodes.BAD_REQUEST, messages.BOOKING_FIELDS_REQUIRED);
         }
+        if (!bookingData.user) {
+            throw new ApiError(StatusCodes.BAD_REQUEST, messages.USER_NOT_FOUND);
+        }
         const { seatNumbers, seatTypeId } = bookingData;
         if (!seatNumbers || !seatTypeId) {
             throw new ApiError(StatusCodes.BAD_REQUEST, messages.BOOKING_FIELDS_REQUIRED);
@@ -69,16 +72,20 @@ const bookingService = {
         const activeDiscount = discountRecord && discountRecord[0];
         const discountValue = activeDiscount ? JSON.parse(activeDiscount.metadata).value : 0;
 
-        totalTicketPrice = discountValue
+        const FinalTotalTicketPrice = discountValue
             ? totalTicketPrice - (totalTicketPrice * discountValue) / 100
             : totalTicketPrice;
 
-        return await userBookingRepo.createBooking({
+        const record = await userBookingRepo.createBooking({
             user: bookingData.user.id,
             seatNo: seatNumbers,
             seatType: seatTypeId,
-            ticketPrice: totalTicketPrice,
+            ticketPrice: FinalTotalTicketPrice,
         });
+        return {
+            record,
+            oldPrice: totalTicketPrice,
+        };
     },
 
     async updateBooking(id, bookingData) {

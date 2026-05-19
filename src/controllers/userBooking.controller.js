@@ -15,13 +15,13 @@ const UserController = {
     }),
 
     createBooking: asyncHandler(async (req, res) => {
-        const payload = { ...req.body, user: req.user && req.user.id };
+        const payload = { ...req.body, user: req.user };
         const data = await userBookingServices.createBooking(payload);
         ApiResponse.success(res, messages.BOOKING_CREATED_SUCCESSFULLY, data);
     }),
 
     updateBooking: asyncHandler(async (req, res) => {
-        const payload = { ...req.body, user: req.user && req.user.id };
+        const payload = { ...req.body, user: req.user };
         const data = await userBookingServices.updateBooking(req.params.id, payload);
         ApiResponse.success(res, messages.BOOKING_UPDATED_SUCCESSFULLY, data);
     }),
