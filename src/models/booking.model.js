@@ -1,38 +1,38 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const {sequelizeDB} = require("../config/db");
+const { Sequelize, DataTypes } = require("sequelize");
+const { sequelizeDB } = require("../config/db");
 
-const UserBooking = sequelizeDB.define('Booking',{
+const UserBooking = sequelizeDB.define("booking", {
     id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    user : {
         type: DataTypes.INTEGER,
-        references:{
-            model : "Users",
-            key: "id"
-        }
+        autoIncrement: true,
+        primaryKey: true,
     },
-    seatNo :{ 
+    user: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: "users",
+            key: "id",
+        },
+    },
+    seatNo: {
         type: DataTypes.ARRAY(DataTypes.INTEGER),
-        allowNull : false,
+        allowNull: false,
     },
-    seatType : {
+    seatType: {
         type: DataTypes.INTEGER,
-        references:{
-            model : "SeatTypes",
-            key: "id"
-        }
+        references: {
+            model: "seatTypes",
+            key: "id",
+        },
     },
-    ticketPrice:{
+    ticketPrice: {
         type: DataTypes.FLOAT,
-        allowNull: false
+        allowNull: false,
     },
-    softDelete:{
+    softDelete: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false
-    }
-})
+        defaultValue: false,
+    },
+});
 
 module.exports = UserBooking;

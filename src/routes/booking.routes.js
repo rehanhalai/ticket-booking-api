@@ -1,13 +1,17 @@
 const router = require("express").Router();
-const bookingController = require("../controllers/userBooking.controller")
+const bookingController = require("../controllers/userBooking.controller");
+const verifyToken = require("../middleware/auth.middleware").verifyToken;
 
-router.post("/",bookingController.createBooking)
+router.use(verifyToken);
 
-router.get("/",bookingController.getAllBookings)
-router.get("/:id",bookingController.getBookingById)
+router.get("/", bookingController.getAllBookings);
+router.get("/:id", bookingController.getBookingById);
 
-router.put("/:id",bookingController.updateBooking)
+router.use(verifyToken);
+router.post("/", bookingController.createBooking);
 
-router.delete("/:id",bookingController.deleteBooking)
+router.put("/:id", bookingController.updateBooking);
+
+router.delete("/:id", bookingController.deleteBooking);
 
 module.exports = router;

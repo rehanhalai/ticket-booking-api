@@ -2,50 +2,58 @@ const booking = require("../models/booking.model");
 const { Op } = require("sequelize");
 
 const UserBookingRepo = {
-
-    getAllBookings : async () => {
-        return await booking.findAll();
+    getAllBookings: async () => {
+        return await booking.findAll({
+            where: {
+                softDelete: false,
+            },
+        });
     },
 
-    getBookingById : async (id) => {
-        return await booking.findByPk(id);
+    getBookingById: async (id) => {
+        return await booking.findOne({
+            where: {
+                id,
+                softDelete: false,
+            },
+        });
     },
-    
+
     getConflictingBookings: async (seatNumbers, excludeBookingId = null) => {
         const whereClause = {
             seatNo: {
-                [Op.overlap]: seatNumbers
-            }
+                [Op.overlap]: seatNumbers,
+            },
+            softDelete: false,
         };
         if (excludeBookingId) {
             whereClause.id = {
-                [Op.ne]: excludeBookingId
+                [Op.ne]: excludeBookingId,
             };
         }
 
         return await booking.findAll({
-            where: whereClause
+            where: whereClause,
         });
-    }
-    ,    
-    createBooking : async (bookingData) => {
+    },
+    createBooking: async (bookingData) => {
         return await booking.create(bookingData);
     },
 
-    updateBooking : async (id, bookingData) => {
-        return await booking.update(bookingData,{
-            where:{
-                id
-            }
-        })
+    updateBooking: async (id, bookingData) => {
+        return await booking.update(bookingData, {
+            where: {
+                id,
+            },
+        });
     },
-    deleteBooking : async (id) => {
+    deleteBooking: async (id) => {
         return await booking.destroy({
-            where:{
-                id
-            }
-        })
-    }
-}
+            where: {
+                id,
+            },
+        });
+    },
+};
 
 module.exports = UserBookingRepo;
