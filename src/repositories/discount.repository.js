@@ -1,37 +1,39 @@
-const discountMode = require("../models/discountSettings.model");
+const { Op } = require("sequelize");
+const discountModel = require("../models/discountSettings.model");
 
 const DiscountRepository = {
-  getAllDiscounts: async () => {
-    return await discountMode.findAll();
-  },
-  getDiscountById: async (id) => {
-    return await discountMode.findByPk(id);
-  },
+    getAllDiscounts: async () => {
+        return await discountModel.findAll();
+    },
+    getDiscountById: async (id) => {
+        return await discountModel.findByPk(id);
+    },
 
-  getDiscountsByTicketCount: async (ticketCount) => {
-    return await discountMode.findAll({
-      where: {
-        key: {
-          [Op.lte]: ticketCount,
-        },
-      },
-      order: [["key", "DESC"]],
-    });
-  },
+    getDiscountsByTicketCount: async (ticketCount) => {
+        return await discountModel.findAll({
+            where: {
+                key: {
+                    [Op.eq]: ticketCount,
+                },
+            },
+        });
+    },
 
-  createDiscount: async (discountData) => {
-    return await discountMode.create(discountData);
-  },
-  updateDiscount: async (id, discountData) => {
-    const discount = await discountMode.findByPk(id);
-    if (!discount) return null;
-    await discount.update(discountData);
-    return discount;
-  },
-  deleteDiscount: async (id) => {
-    const discount = await discountMode.findByPk(id);
-    if (!discount) return null;
-    await discount.destroy();
-    return discount;
-  },
+    createDiscount: async (discountData) => {
+        return await discountModel.create(discountData);
+    },
+    updateDiscount: async (id, discountData) => {
+        const discount = await discountModel.findByPk(id);
+        if (!discount) return null;
+        await discount.update(discountData);
+        return discount;
+    },
+    deleteDiscount: async (id) => {
+        const discount = await discountModel.findByPk(id);
+        if (!discount) return null;
+        await discount.destroy();
+        return discount;
+    },
 };
+
+module.exports = DiscountRepository;

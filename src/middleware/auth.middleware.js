@@ -2,16 +2,27 @@ const jwt = require("jsonwebtoken");
 const ApiError = require("../helper/apiError");
 
 function verifyToken(req, res, next) {
-  const token = req.headers["authorization"];
-  if (!token) {
-    return ApiError(401, "No token provided");
+  const authHeader = req.headers["authorization"];
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return next(new ApiError(401, "No token provided or invalid format"));
   }
+
+  const token = authHeader.split(" ")[1];
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.userId = decoded.id;
-    req.role = decoded.role;
+
+    req.user = {
+      id: decoded.id,
+      role: decoded.role,
+    };
+
     next();
   } catch (error) {
-    return ApiError(401, "Invalid token");
+    return next(new ApiError(401, "Invalid or expired token"));
   }
 }
+
+module.exports = {
+  verifyToken,
+};
