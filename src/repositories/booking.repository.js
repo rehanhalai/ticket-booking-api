@@ -18,7 +18,14 @@ const UserBookingRepo = {
             },
         });
     },
-
+    getAllBookingByUserId: async (userId) => {
+        return await booking.findAll({
+            where: {
+                user: userId,
+                softDelete: false,
+            },
+        });
+    },
     getConflictingBookings: async (seatNumbers, excludeBookingId = null) => {
         const whereClause = {
             seatNo: {

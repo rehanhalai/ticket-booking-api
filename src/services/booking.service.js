@@ -4,6 +4,7 @@ const { regexEmail, regexFirstUpperCase } = require("../helper/regex");
 const ApiError = require("../helper/apiError");
 const DiscountRepository = require("../repositories/discount.repository");
 const UserRepository = require("../repositories/user.repository");
+const bookingEmitter = require("../emitter/booking.emitter");
 const messages = require("../constants/messages").messages;
 const StatusCodes = require("http-status-codes").StatusCodes;
 
@@ -15,6 +16,14 @@ const bookingService = {
     async getBookingById(id) {
         const data = await userBookingRepo.getBookingById(id);
         if (!data) {
+            throw new ApiError(StatusCodes.NOT_FOUND, messages.BOOKING_NOT_FOUND);
+        }
+        return data;
+    },
+
+    async getAllBookingByUserId(userId) {
+        const data = await userBookingRepo.getAllBookingByUserId(userId);
+        if (!data || data.length === 0) {
             throw new ApiError(StatusCodes.NOT_FOUND, messages.BOOKING_NOT_FOUND);
         }
         return data;
@@ -82,6 +91,10 @@ const bookingService = {
             seatType: seatTypeId,
             ticketPrice: FinalTotalTicketPrice,
         });
+
+        bookingEmitter.emit("booking:created", {
+            userId: bookingData.user.id
+        })
         return {
             record,
             oldPrice: totalTicketPrice,
@@ -159,11 +172,20 @@ const bookingService = {
         return updatedUserBooking;
     },
 
-    async deleteBooking(id) {
+    async deleteBooking(payload) {
+        const { id, user } = payload;
         const booking = await userBookingRepo.getBookingById(id);
+
         if (!booking) {
             throw new ApiError(StatusCodes.NOT_FOUND, messages.BOOKING_NOT_FOUND);
         }
+
+        const isOwner = booking.user.toString() === user.id.toString();
+
+        if (!isOwner) {
+            throw new ApiError(StatusCodes.FORBIDDEN, messages.INSUFFICIENT_PERMISSIONS);
+        }
+
         return await userBookingRepo.updateBooking(id, {
             softDelete: true,
         });
