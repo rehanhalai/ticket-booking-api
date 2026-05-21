@@ -5,7 +5,7 @@ const verifyToken = require("../middleware/auth.middleware").verifyToken;
 router.use(verifyToken);
 
 router.get("/", bookingController.getAllBookings);
-router.get("/stream", verifyToken, bookingController.getBookingsByEmmiter);
+router.get("/stream", bookingController.getBookingsByEmmiter);
 router.get("/:id", bookingController.getBookingById);
 
 router.use(verifyToken);
