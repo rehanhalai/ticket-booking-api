@@ -2,7 +2,7 @@ const userRepo = require("../repositories/user.repository");
 const ApiError = require("../helper/apiError");
 const messages = require("../constants/messages").messages;
 const { regexEmail, regexFirstUpperCase } = require("../helper/regex");
-const generateToken = require("../helper/jwt");
+const { generateToken } = require("../helper/jwt");
 const bcrypt = require("bcrypt");
 const StatusCodes = require("http-status-codes").StatusCodes;
 

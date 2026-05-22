@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const ApiError = require("./apiError");
 
 async function generateToken(user) {
     const payload = {
@@ -12,4 +13,16 @@ async function generateToken(user) {
     return token;
 }
 
-module.exports = generateToken;
+async function verifyToken(token) {
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        return req.user = {
+            id: decoded.id,
+            role: decoded.role,
+        };
+    } catch (error) {
+        return new ApiError(401, "Invalid or expired token");
+    }
+}
+
+module.exports = { generateToken, verifyToken };

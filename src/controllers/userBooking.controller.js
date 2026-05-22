@@ -2,6 +2,11 @@ const userBookingServices = require("../services/booking.service");
 const asyncHandler = require("../helper/asyncHandler");
 const ApiResponse = require("../helper/apiResponse");
 const messages = require("../constants/messages");
+const bookingEmitter = require("../emitter/booking.emitter");
+const crypto = require("crypto")
+const { verifyToken } = require("../helper/jwt")
+
+const activeUsers = new Map();
 
 const UserController = {
     getAllBookings: asyncHandler(async (req, res) => {
@@ -12,6 +17,44 @@ const UserController = {
     getBookingById: asyncHandler(async (req, res) => {
         const data = await userBookingServices.getBookingById(req.params.id);
         ApiResponse.success(res, messages.BOOKING_FETCHED_SUCCESSFULLY, data);
+    }),
+
+    getBookingsByEmmiter: asyncHandler(async (req, res) => {
+
+        const { id: userId } = await verifyToken(req.params.jwt);
+        const subscriptionId = crypto.randomUUID();
+
+
+        res.writeHead(200, {
+            'Content-Type': 'text/event-stream',
+            'Cache-Control': 'no-cache',
+            'Connection': 'keep-alive'
+        });
+        res.flushHeaders();
+
+        activeUsers.set(userId, subscriptionId);
+
+        res.write(`event: bookingStream\n`);
+        res.write(`data: ${JSON.stringify({ subscriptionId })}\n\n`);
+
+        const onBookingCreated = async (data) => {
+            try {
+                const bookings = await userBookingServices.getAllBookingByUserId(req.user.id);
+                res.write(`event : bookingLcreated\n`);
+                res.write(`data: ${JSON.stringify(bookings)}\n\n`);
+            } catch (error) {
+                console.error("booking:created listener error", error.message);
+            }
+        };
+
+        bookingEmitter.on("booking:created", onBookingCreated);
+
+        req.on('close', () => {
+            console.log('Client disconnected from booking stream');
+            bookingEmitter.off("booking:created", onBookingCreated);
+            activeUsers.delete(userId)
+            res.end();
+        })
     }),
 
     createBooking: asyncHandler(async (req, res) => {
@@ -27,7 +70,8 @@ const UserController = {
     }),
 
     deleteBooking: asyncHandler(async (req, res) => {
-        const data = await userBookingServices.deleteBooking(req.params.id);
+        const payload = { id: req.params.id, user: req.user };
+        const data = await userBookingServices.deleteBooking(payload);
         ApiResponse.success(res, messages.BOOKING_DELETED_SUCCESSFULLY, data);
     }),
 };
