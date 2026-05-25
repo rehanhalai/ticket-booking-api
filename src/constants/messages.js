@@ -54,6 +54,13 @@ const messages = {
 
     ROLES_FETCHED_SUCCESSFULLY: "roles fetched successfully",
     ROLE_CREATED_SUCCESSFULLY: "role created successfully",
+
+    PERMISSION_FIELDS_REQUIRED: "name is required",
+    PERMISSION_NOT_FOUND: "permission not found",
+    PERMISSION_FETCHED_SUCCESSFULLY: "permission fetched successfully",
+    PERMISSION_CREATED_SUCCESSFULLY: "permission created successfully",
+    PERMISSION_UPDATED_SUCCESSFULLY: "permission updated successfully",
+    PERMISSION_DELETED_SUCCESSFULLY: "permission deleted successfully",
 };
 
 module.exports = {
