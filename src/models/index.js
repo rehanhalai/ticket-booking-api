@@ -11,6 +11,8 @@ const { sequelizeDB } = require("../config/db");
 roleModel.belongsToMany(permissionModel, { through: "rolePermissions", onDelete: "CASCADE" });
 permissionModel.belongsToMany(roleModel, { through: "rolePermissions", onDelete: "CASCADE" });
 
+UserMdoel.belongsTo(roleModel, { foreignKey: "roleId" });
+roleModel.hasMany(UserMdoel, { foreignKey: "roleId" });
 
 const runasync = async () => {
     try {
