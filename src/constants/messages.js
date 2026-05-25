@@ -15,6 +15,7 @@ const messages = {
     SEAT_TYPE_NOT_FOUND: "seat type not found",
     USER_NOT_FOUND: "user not found",
     DISCOUNT_NOT_FOUND: "discount not found",
+    ROLE_NOT_FOUND : "role not found",
 
     INSUFFICIENT_PERMISSIONS: "you do not have permission to perform this action",
 
@@ -50,6 +51,9 @@ const messages = {
     DISCOUNT_CREATED_SUCCESSFULLY: "discount created successfully",
     DISCOUNT_UPDATED_SUCCESSFULLY: "discount updated successfully",
     DISCOUNT_DELETED_SUCCESSFULLY: "discount deleted successfully",
+
+    ROLES_FETCHED_SUCCESSFULLY: "roles fetched successfully",
+    ROLE_CREATED_SUCCESSFULLY: "role created successfully",
 };
 
 module.exports = {

@@ -5,6 +5,7 @@ const { regexEmail, regexFirstUpperCase } = require("../helper/regex");
 const { generateToken } = require("../helper/jwt");
 const bcrypt = require("bcrypt");
 const StatusCodes = require("http-status-codes").StatusCodes;
+const roleRepo = require("../repositories/role.repository");
 
 const authServices = {
     register: async (userData) => {
@@ -36,13 +37,15 @@ const authServices = {
         if (existingUser) {
             throw new ApiError(StatusCodes.CONFLICT, messages.EMAIL_ALREADY_EXISTS);
         }
+        const role = roleRepo.fetchById(roleId);
+        if(!role) throw new ApiError(StatusCodes.BAD_REQUEST,messages.ROLE_NOT_FOUND)
 
         const passwordHash = await bcrypt.hash(passwordVal, 10);
         const userDataToSave = {
             name: nameTrim,
             email: emailTrim,
             passwordHash,
-            role: roleId,
+            role,
         };
         const createdUser = await userRepo.createUser(userDataToSave);
         const token = await generateToken(createdUser);

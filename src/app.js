@@ -6,6 +6,7 @@ const seatTypeRoutes = require("./routes/seatType.routes");
 const authRoutes = require("./routes/auth.routes");
 const userRoutes = require("./routes/user.routes");
 const discountRoutes = require("./routes/discount.routes");
+const roleRoutes = require("./routes/roles.routes");
 const { runasync } = require("./models/index");
 const { errorHandler } = require("./middleware/error.middleware");
 
@@ -22,6 +23,7 @@ app.use("/seat-type", seatTypeRoutes);
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/discounts", discountRoutes);
+app.use("/roles", roleRoutes);
 
 // global error handler
 app.use(errorHandler);

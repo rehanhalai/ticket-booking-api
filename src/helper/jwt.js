@@ -1,10 +1,15 @@
 const jwt = require("jsonwebtoken");
 const ApiError = require("./apiError");
+const { StatusCodes } = require("http-status-codes");
 
 async function generateToken(user) {
+
+    if(typeof user.role !== String)
+        throw new ApiError(StatusCodes.NOT_ACCEPTABLE,"role should not fetched for token creation")
+
     const payload = {
         id: user.id,
-        role: user.role,
+        role: user.role.toUpperCase(),
     };
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES_IN,

@@ -8,7 +8,6 @@ router.get("/", bookingController.getAllBookings);
 router.get("/stream", bookingController.getBookingsByEmmiter);
 router.get("/:id", bookingController.getBookingById);
 
-router.use(verifyToken);
 router.post("/", bookingController.createBooking);
 router.put("/:id", bookingController.updateBooking);
 router.delete("/:id", bookingController.deleteBooking);
