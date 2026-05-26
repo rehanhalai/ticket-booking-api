@@ -1,7 +1,7 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const { sequelizeDB } = require("../config/db");
 
-const User = sequelizeDB.define("user", {
+const Permissions = sequelizeDB.define("permission", {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -10,18 +10,7 @@ const User = sequelizeDB.define("user", {
     name: {
         type: DataTypes.STRING,
         allowNull: false,
-    },
-    email: {
-        type: DataTypes.STRING,
-        allowNull: false,
         unique: true,
-    },
-    passwordHash: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    roleId: {
-        type: DataTypes.INTEGER,
     },
     softDelete: {
         type: DataTypes.BOOLEAN,
@@ -29,4 +18,4 @@ const User = sequelizeDB.define("user", {
     },
 });
 
-module.exports = User;
+module.exports = Permissions;

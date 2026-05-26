@@ -1,10 +1,16 @@
 const jwt = require("jsonwebtoken");
 const ApiError = require("./apiError");
+const { StatusCodes } = require("http-status-codes");
 
-async function generateToken(user) {
+async function generateToken({id, roleId }) {
+
+    if(typeof roleId !== "number"){
+        throw new ApiError(StatusCodes.NOT_ACCEPTABLE,"role must be a number for token generation")
+    }
+
     const payload = {
-        id: user.id,
-        role: user.role,
+        id: id,
+        roleId: roleId,
     };
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES_IN,
@@ -18,7 +24,7 @@ async function verifyToken(token) {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         return req.user = {
             id: decoded.id,
-            role: decoded.role,
+            roleId: decoded.roleId,
         };
     } catch (error) {
         return new ApiError(401, "Invalid or expired token");

@@ -1,3 +1,4 @@
+
 const messages = {
     NAME_REQUIRED: "fullName is required",
     EMAIL_REQUIRED: "email is required",
@@ -15,8 +16,10 @@ const messages = {
     SEAT_TYPE_NOT_FOUND: "seat type not found",
     USER_NOT_FOUND: "user not found",
     DISCOUNT_NOT_FOUND: "discount not found",
+    ROLE_NOT_FOUND : "role not found",
 
     INSUFFICIENT_PERMISSIONS: "you do not have permission to perform this action",
+    UNAUTHORIZED: "Unauthorized",
 
     INVALID_CREDENTIALS: "invalid credentials",
     INVALID_EMAIL: "invalid email format",
@@ -50,6 +53,16 @@ const messages = {
     DISCOUNT_CREATED_SUCCESSFULLY: "discount created successfully",
     DISCOUNT_UPDATED_SUCCESSFULLY: "discount updated successfully",
     DISCOUNT_DELETED_SUCCESSFULLY: "discount deleted successfully",
+
+    ROLES_FETCHED_SUCCESSFULLY: "roles fetched successfully",
+    ROLE_CREATED_SUCCESSFULLY: "role created successfully",
+
+    PERMISSION_FIELDS_REQUIRED: "name is required",
+    PERMISSION_NOT_FOUND: "permission not found",
+    PERMISSION_FETCHED_SUCCESSFULLY: "permission fetched successfully",
+    PERMISSION_CREATED_SUCCESSFULLY: "permission created successfully",
+    PERMISSION_UPDATED_SUCCESSFULLY: "permission updated successfully",
+    PERMISSION_DELETED_SUCCESSFULLY: "permission deleted successfully",
 };
 
 module.exports = {

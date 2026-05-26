@@ -1,14 +1,16 @@
 const router = require("express").Router();
 const seatTypeController = require("../controllers/seatType.controller");
+const { PERMISSIONS } = require("../helper/permissions");
+const { verifyPermission } = require("../middleware/permissions.middleware");
 const verifyToken = require("../middleware/auth.middleware").verifyToken;
-const verifyRole = require("../middleware/roles.middleware").verifyRole;
+
 
 router.use(verifyToken);
-router.use(verifyRole(["1"]));
+router.use(verifyPermission(PERMISSIONS.SEAT_TYPE_MANAGE));
 
 router.get("/", seatTypeController.getAllSeatTypes);
-router.get("/:id", seatTypeController.getSeatTypeById);
 router.post("/", seatTypeController.createSeatType);
+router.get("/:id", seatTypeController.getSeatTypeById);
 router.put("/:id", seatTypeController.updateSeatType);
 router.delete("/:id", seatTypeController.deleteSeatType);
 

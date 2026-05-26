@@ -1,9 +1,14 @@
-const route = require("express").Router();
+const router = require("express").Router();
 const userController = require("../controllers/user.controller");
 const verifyToken = require("../middleware/auth.middleware").verifyToken;
+const { PERMISSIONS } = require("../helper/permissions");
+const { verifyPermission } = require("../middleware/permissions.middleware");
 
-route.get("/", userController.getAllUsers);
-route.get("/profile", verifyToken, userController.getProfile);
-route.get("/:id", userController.getUserById);
+router.use(verifyToken);
+router.use(verifyPermission(PERMISSIONS.USER_VIEW));
 
-module.exports = route;
+router.get("/", userController.getAllUsers);
+router.get("/profile", verifyToken, userController.getProfile);
+router.get("/:id", userController.getUserById);
+
+module.exports = router;
