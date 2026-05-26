@@ -37,7 +37,7 @@ const authServices = {
         if (existingUser) {
             throw new ApiError(StatusCodes.CONFLICT, messages.EMAIL_ALREADY_EXISTS);
         }
-        const role = roleRepo.fetchById(roleId);
+        const role = await roleRepo.fetchById(roleId);
         if(!role) throw new ApiError(StatusCodes.BAD_REQUEST,messages.ROLE_NOT_FOUND)
 
         const passwordHash = await bcrypt.hash(passwordVal, 10);
@@ -45,10 +45,10 @@ const authServices = {
             name: nameTrim,
             email: emailTrim,
             passwordHash,
-            role,
+            roleId: roleId,
         };
         const createdUser = await userRepo.createUser(userDataToSave);
-        const token = await generateToken({ id: createdUser.id, role: role.name });
+        const token = await generateToken({ id: createdUser.id, roleId: roleId });
 
         return { token };
     },
@@ -69,7 +69,7 @@ const authServices = {
         if (!isMatch) {
             throw new ApiError(StatusCodes.UNAUTHORIZED, messages.INVALID_CREDENTIALS);
         }
-        const token = await generateToken(user);
+        const token = await generateToken({id: user.id, roleId:user.roleId});
         return { token };
     },
 };

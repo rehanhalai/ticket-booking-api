@@ -1,3 +1,4 @@
+
 const messages = {
     NAME_REQUIRED: "fullName is required",
     EMAIL_REQUIRED: "email is required",
@@ -18,6 +19,7 @@ const messages = {
     ROLE_NOT_FOUND : "role not found",
 
     INSUFFICIENT_PERMISSIONS: "you do not have permission to perform this action",
+    UNAUTHORIZED: "Unauthorized",
 
     INVALID_CREDENTIALS: "invalid credentials",
     INVALID_EMAIL: "invalid email format",

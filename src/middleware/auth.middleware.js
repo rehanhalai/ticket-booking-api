@@ -14,7 +14,7 @@ function verifyToken(req, res, next) {
 
     req.user = {
       id: decoded.id,
-      role: decoded.role,
+      roleId: decoded.roleId,
     };
 
     next();

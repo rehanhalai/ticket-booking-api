@@ -19,7 +19,7 @@ const RoleService = {
         for (const permissionId of permissions) {
             await role.addPermission(permissionId)
         }
-        return role
+        return role;
     }
 }
 

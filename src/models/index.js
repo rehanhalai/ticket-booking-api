@@ -12,7 +12,7 @@ roleModel.belongsToMany(permissionModel, { through: "rolePermissions", onDelete:
 permissionModel.belongsToMany(roleModel, { through: "rolePermissions", onDelete: "CASCADE" });
 
 UserModel.belongsTo(roleModel, { foreignKey: "roleId" });
-roleModel.hasMany(UserModel, { foreignKey: "role" });
+roleModel.hasMany(UserModel, { foreignKey: "roleId" });
 
 const runasync = async () => {
     try {

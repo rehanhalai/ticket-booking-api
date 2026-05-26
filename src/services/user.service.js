@@ -15,6 +15,13 @@ const userService = {
         }
         return data;
     },
+    verifyPermission : async (roleId, permissionName) => {
+        const isAutohrized = await userRepository.hasPermission(roleId, permissionName)
+        if(!isAutohrized){
+            throw new ApiError(StatusCodes.FORBIDDEN, messages.INSUFFICIENT_PERMISSIONS);
+        }
+        return true;
+    }
 };
 
 module.exports = userService;

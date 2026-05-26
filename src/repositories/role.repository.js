@@ -7,8 +7,8 @@ const RoleRepository = {
     async createRole(name){
         return await roleModel.create({ name })
     },
-    async fetchById(roleId){
-        return await roleModel.findByPk(roleId);
+    async fetchById(id){
+        return await roleModel.findByPk(id);
     } 
 }
 

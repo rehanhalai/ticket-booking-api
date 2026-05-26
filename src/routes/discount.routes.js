@@ -1,11 +1,11 @@
 const router = require("express").Router();
 const discountController = require("../controllers/discount.controller");
+const { PERMISSIONS } = require("../helper/permissions");
+const { verifyPermission } = require("../middleware/permissions.middleware");
 const verifyToken = require("../middleware/auth.middleware").verifyToken;
-const verifyRole = require("../middleware/roles.middleware").verifyRole;
-const ROLES = require("../helper/roles");
 
 router.use(verifyToken);
-router.use(verifyRole([ROLES.ADMIN]));
+router.use(verifyPermission(PERMISSIONS.DISCOUNT_MANAGE));
 
 router.get("/", discountController.getAllDiscounts);
 router.get("/:id", discountController.getDiscountById);
