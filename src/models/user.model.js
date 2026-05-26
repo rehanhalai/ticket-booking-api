@@ -20,7 +20,7 @@ const User = sequelizeDB.define("user", {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    role: {
+    roleId: {
         type: DataTypes.INTEGER,
     },
     softDelete: {

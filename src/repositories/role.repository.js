@@ -4,8 +4,8 @@ const RoleRepository = {
     async fetchAllRoles(){
         return await roleModel.findAll()
     },
-    async createRole(roleData){
-        return await roleModel.create(roleData)
+    async createRole(name){
+        return await roleModel.create({ name })
     },
     async fetchById(roleId){
         return await roleModel.findByPk(roleId);

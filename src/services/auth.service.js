@@ -48,7 +48,7 @@ const authServices = {
             role,
         };
         const createdUser = await userRepo.createUser(userDataToSave);
-        const token = await generateToken(createdUser);
+        const token = await generateToken({ id: createdUser.id, role: role.name });
 
         return { token };
     },

@@ -7,12 +7,19 @@ const RoleService = {
         return await roleRepo.fetchAllRoles()
     },
     async createRole(roleData){
-        const { name } = roleData
-        if (!name) {
-            throw new ApiError(StatusCodes.BAD_REQUEST, "Role name is required")
+        const { name, permissions } = roleData
+        if (!name || permissions === undefined || !Array.isArray(permissions) || permissions.length === 0) {
+            throw new ApiError(StatusCodes.BAD_REQUEST, "Role name and permissions are required")
+        }
+        if(typeof name !== "string" || name.trim() === ""){
+            throw new ApiError(StatusCodes.BAD_REQUEST, "Role name must be a string")
         }
 
-        return await roleRepo.createRole(roleData)
+        const role = await roleRepo.createRole(name)
+        for (const permissionId of permissions) {
+            await role.addPermission(permissionId)
+        }
+        return role
     }
 }
 
