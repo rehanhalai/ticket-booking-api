@@ -18,6 +18,16 @@ const userController = {
         const data = await userService.getUserById(id);
         apiResponse.success(res, messages.PROFILE_FETCHED_SUCCESSFULLY, data);
     }),
+    blockUserById: asyncHandler(async (req, res) => {
+        const userId = req.params.id;
+        await userService.blockUserById(userId);
+        apiResponse.success(res, messages.USER_BLOCKED_SUCCESSFULLY);
+    }),
+    unBlockUserById: asyncHandler(async (req, res) => {
+        const userId = req.params.id;
+        await userService.unblockUserById(userId);
+        apiResponse.success(res, messages.USER_UNBLOCKED_SUCCESSFULLY);
+    }),
 };
 
 module.exports = userController;

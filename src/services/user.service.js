@@ -28,7 +28,7 @@ const userService = {
         if (!user) {
             throw new ApiError(StatusCodes.NOT_FOUND, messages.USER_NOT_FOUND);
         }
-        await userRepository.updateUser(userId, { isBlocked: false });
+        await userRepository.updateUser(userId, { isBlocked: false, loginAttempts: 0 });
         return true;
     },
     updateLogginAttempts: async (userId, count) => {

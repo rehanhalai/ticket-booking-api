@@ -20,6 +20,9 @@ const messages = {
     INSUFFICIENT_PERMISSIONS: "you do not have permission to perform this action",
     UNAUTHORIZED: "Unauthorized",
     LOGIN_ATTEMPTS_EXCEEDED: "login attempts exceeded",
+    USER_BLOCKED: "user blocked",
+    USER_UNBLOCKED_SUCCESSFULLY: "user unblocked successfully",
+    USER_BLOCKED_SUCCESSFULLY: "user blocked successfully",
 
     INVALID_CREDENTIALS: "invalid credentials",
     INVALID_EMAIL: "invalid email format",
@@ -36,6 +39,9 @@ const messages = {
     USER_FETCHED_SUCCESSFULLY: "user fetched successfully",
     USER_UPDATED_SUCCESSFULLY: "user updated successfully",
     USER_DELETED_SUCCESSFULLY: "user deleted successfully",
+
+    PROFILE_FETCHED_SUCCESSFULLY: "profile fetched successfully",
+    PROFILE_UPDATED_SUCCESSFULLY: "profile updated successfully",
 
     LOGIN_SUCCESSFUL: "login successful",
     REGISTER_SUCCESSFUL: "registration successful",
