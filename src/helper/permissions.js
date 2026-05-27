@@ -16,6 +16,6 @@ const permissions = {
 
     PERMISSION_VIEW: "permissions:view",
     PERMISSION_MANAGE: "permissions:manage",
-}
+};
 
 module.exports = { PERMISSIONS: permissions };
