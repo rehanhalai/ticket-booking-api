@@ -6,6 +6,7 @@ const { generateToken } = require("../helper/jwt");
 const bcrypt = require("bcrypt");
 const StatusCodes = require("http-status-codes").StatusCodes;
 const roleRepo = require("../repositories/role.repository");
+const userService = require("./user.service");
 
 const authServices = {
     register: async (userData) => {
@@ -38,7 +39,7 @@ const authServices = {
             throw new ApiError(StatusCodes.CONFLICT, messages.EMAIL_ALREADY_EXISTS);
         }
         const role = await roleRepo.fetchById(roleId);
-        if(!role) throw new ApiError(StatusCodes.BAD_REQUEST,messages.ROLE_NOT_FOUND)
+        if (!role) throw new ApiError(StatusCodes.BAD_REQUEST, messages.ROLE_NOT_FOUND);
 
         const passwordHash = await bcrypt.hash(passwordVal, 10);
         const userDataToSave = {
@@ -65,11 +66,20 @@ const authServices = {
         if (!user) {
             throw new ApiError(StatusCodes.NOT_FOUND, messages.USER_NOT_FOUND);
         }
+        if (user.isBlocked) {
+            throw new ApiError(StatusCodes.FORBIDDEN, messages.USER_BLOCKED);
+        }
         const isMatch = await bcrypt.compare(password, user.passwordHash);
         if (!isMatch) {
+            if (user.loginAttempts >= 5) {
+                await userService.blockUserById(user.id);
+                throw new ApiError(StatusCodes.FORBIDDEN, messages.LOGIN_ATTEMPTS_EXCEEDED);
+            }
+            await userRepo.updateLoginAttempts(user.id, (user.loginAttempts || 0) + 1);
             throw new ApiError(StatusCodes.UNAUTHORIZED, messages.INVALID_CREDENTIALS);
         }
-        const token = await generateToken({id: user.id, roleId:user.roleId});
+        await userRepo.updateLoginAttempts(user.id, 0);
+        const token = await generateToken({ id: user.id, roleId: user.roleId });
         return { token };
     },
 };

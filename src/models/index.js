@@ -16,7 +16,7 @@ roleModel.hasMany(UserModel, { foreignKey: "roleId" });
 
 const runasync = async () => {
     try {
-        await sequelizeDB.sync();
+        await sequelizeDB.sync({ force:true });
         console.log("The tables are created!");
     } catch (error) {
         console.error("Unable to connect or sync:", error);

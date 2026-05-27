@@ -1,4 +1,3 @@
-
 const messages = {
     NAME_REQUIRED: "fullName is required",
     EMAIL_REQUIRED: "email is required",
@@ -16,10 +15,11 @@ const messages = {
     SEAT_TYPE_NOT_FOUND: "seat type not found",
     USER_NOT_FOUND: "user not found",
     DISCOUNT_NOT_FOUND: "discount not found",
-    ROLE_NOT_FOUND : "role not found",
+    ROLE_NOT_FOUND: "role not found",
 
     INSUFFICIENT_PERMISSIONS: "you do not have permission to perform this action",
     UNAUTHORIZED: "Unauthorized",
+    LOGIN_ATTEMPTS_EXCEEDED: "login attempts exceeded",
 
     INVALID_CREDENTIALS: "invalid credentials",
     INVALID_EMAIL: "invalid email format",

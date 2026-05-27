@@ -20,6 +20,13 @@ const User = sequelizeDB.define("user", {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    isBlocked: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
+    loginAttempts: {
+        type: DataTypes.INTEGER,
+    },
     roleId: {
         type: DataTypes.INTEGER,
     },

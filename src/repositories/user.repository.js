@@ -46,7 +46,14 @@ const UserRepository = {
             }
         })
         return count > 0;
-    }
+    },
+    updateLoginAttempts: async (id, count) => {
+        return await userModel.update({ loginAttempts: count }, {
+            where: {
+                id,
+            },
+        });
+    },
 };
 
 module.exports = UserRepository;

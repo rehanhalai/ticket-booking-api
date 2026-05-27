@@ -5,10 +5,15 @@ const { PERMISSIONS } = require("../helper/permissions");
 const { verifyPermission } = require("../middleware/permissions.middleware");
 
 router.use(verifyToken);
-router.use(verifyPermission(PERMISSIONS.USER_VIEW));
+router.use();
 
 router.get("/", userController.getAllUsers);
-router.get("/profile", verifyToken, userController.getProfile);
+
+router.get("/profile", verifyToken, verifyPermission(PERMISSIONS.USER_VIEW), userController.getProfile);
+
 router.get("/:id", userController.getUserById);
+
+router.put("/block/:id", verifyToken, verifyPermission(PERMISSIONS.USER_MANAGE), userController.blockUserById);
+router.put("/unblock/:id", verifyToken, verifyPermission(PERMISSIONS.USER_MANAGE), userController.unblockUserById);
 
 module.exports = router;
