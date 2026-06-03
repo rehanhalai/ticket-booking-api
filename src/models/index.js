@@ -13,6 +13,9 @@ permissionModel.belongsToMany(roleModel, { through: "rolePermissions", onDelete:
 UserModel.belongsTo(roleModel, { foreignKey: "roleId" });
 roleModel.hasMany(UserModel, { foreignKey: "roleId" });
 
+UserModel.hasMany(BookingModel, { foreignKey: "user" });
+BookingModel.belongsTo(UserModel, { foreignKey: "user", as: "userData" });
+
 const runasync = async () => {
     try {
         await sequelizeDB.sync();
