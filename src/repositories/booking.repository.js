@@ -1,5 +1,6 @@
 const booking = require("../models/booking.model");
 const { Op } = require("sequelize");
+const user = require("../models/user.model");
 
 const UserBookingRepo = {
     getAllBookings: async () => {
@@ -26,12 +27,13 @@ const UserBookingRepo = {
             },
         });
     },
-    getConflictingBookings: async (seatNumbers, excludeBookingId = null) => {
+    getConflictingBookings: async (seatNumbers, seatType, excludeBookingId = null) => {
         const whereClause = {
             seatNo: {
                 [Op.overlap]: seatNumbers,
             },
             softDelete: false,
+            seatType,
         };
         if (excludeBookingId) {
             whereClause.id = {
@@ -58,6 +60,20 @@ const UserBookingRepo = {
         return await booking.destroy({
             where: {
                 id,
+            },
+        });
+    },
+    getAllBookingsFullData: async () => {
+        return await booking.findAll({
+            where: {
+                softDelete: false,
+            },
+            include: {
+                model: user,
+                as: "userData",
+                attributes: ["id", "name"],
+                raw: true,
+                nest: true,
             },
         });
     },

@@ -3,8 +3,9 @@ const asyncHandler = require("../helper/asyncHandler");
 const ApiResponse = require("../helper/apiResponse");
 const messages = require("../constants/messages");
 const bookingEmitter = require("../emitter/booking.emitter");
-const crypto = require("crypto")
-const { verifyToken } = require("../helper/jwt")
+const crypto = require("crypto");
+const { verifyToken } = require("../helper/jwt");
+const { StatusCodes } = require("http-status-codes");
 
 const activeUsers = new Map();
 
@@ -19,16 +20,19 @@ const UserController = {
         ApiResponse.success(res, messages.BOOKING_FETCHED_SUCCESSFULLY, data);
     }),
 
-    getBookingsByEmmiter: asyncHandler(async (req, res) => {
+    getAllBookingByUserId: asyncHandler(async (req, res) => {
+        const data = await userBookingServices.getAllBookingByUserId(req.params.id);
+        ApiResponse.success(res, messages.BOOKING_FETCHED_SUCCESSFULLY, data);
+    }),
 
+    getBookingsByEmmiter: asyncHandler(async (req, res) => {
         const { id: userId } = await verifyToken(req.params.jwt);
         const subscriptionId = crypto.randomUUID();
 
-
         res.writeHead(200, {
-            'Content-Type': 'text/event-stream',
-            'Cache-Control': 'no-cache',
-            'Connection': 'keep-alive'
+            "Content-Type": "text/event-stream",
+            "Cache-Control": "no-cache",
+            Connection: "keep-alive",
         });
         res.flushHeaders();
 
@@ -49,12 +53,12 @@ const UserController = {
 
         bookingEmitter.on("booking:created", onBookingCreated);
 
-        req.on('close', () => {
-            console.log('Client disconnected from booking stream');
+        req.on("close", () => {
+            console.log("Client disconnected from booking stream");
             bookingEmitter.off("booking:created", onBookingCreated);
-            activeUsers.delete(userId)
+            activeUsers.delete(userId);
             res.end();
-        })
+        });
     }),
 
     createBooking: asyncHandler(async (req, res) => {
@@ -73,6 +77,22 @@ const UserController = {
         const payload = { id: req.params.id, user: req.user };
         const data = await userBookingServices.deleteBooking(payload);
         ApiResponse.success(res, messages.BOOKING_DELETED_SUCCESSFULLY, data);
+    }),
+
+    createUserBookingReport: asyncHandler(async (req, res) => {
+        const userId = req.params.id;
+
+        const { buffer, fileName } = await userBookingServices.createBookingReport(userId);
+        res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`);
+
+        res.status(StatusCodes.ACCEPTED).send(buffer);
+    }),
+    createAllBookingsReport: asyncHandler(async (req, res) => {
+        const { buffer, fileName } = await userBookingServices.getAllBookingsReport();
+        res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`);
+        res.status(StatusCodes.ACCEPTED).send(buffer);
     }),
 };
 
